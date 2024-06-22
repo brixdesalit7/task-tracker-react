@@ -1,0 +1,35 @@
+$color-red : #e82610;
+$color-green : #10e829;
+$color-blue : #1014e8;
+
+.task-tracker {
+    width: 1000px;
+    margin: auto;
+    border: 1px solid red;
+
+    &__heading {
+        text-align: center;
+        font-size: 40px;
+    }
+
+    &__form {
+        text-align: center;
+
+        &__input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+
+            &::placeholder {
+                font-size: 16px;
+            }
+        }
+
+        &__add {
+            padding: 10px 30px;
+            margin-left: 10px;
+            font-size: 16px;
+            background: $color-blue;
+        }
+    }
+}
