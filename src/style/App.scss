@@ -1,11 +1,10 @@
-$color-red : #e82610;
-$color-green : #10e829;
-$color-blue : #1014e8;
+$color-red : #fa0505;
+$color-green : #089950;
+$color-blue : #0064ff;
 
 .task-tracker {
     width: 1000px;
     margin: auto;
-    border: 1px solid red;
 
     &__heading {
         text-align: center;
@@ -26,10 +25,63 @@ $color-blue : #1014e8;
         }
 
         &__add {
-            padding: 10px 30px;
+            padding: 12px 30px;
             margin-left: 10px;
             font-size: 16px;
-            background: $color-blue;
+            background: $color-green;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    }
+
+    &__table {
+        width: 100%;
+        margin-top: 40px;
+
+        &__thead {
+            font-size: 20px;
+            &__tr {
+                &__th {
+                    padding: 20px 0;
+                }
+            }
+        }
+
+        &__tbody {
+            &__tr {
+                &__th {
+                    font-weight: 400;
+                    padding: 20px 0;
+
+                    &.task-id {
+                        width: 80px;
+                    }
+
+                    &.task-name {
+                        width: 450px;
+                        text-align: left;
+                    }
+
+                    &__btn {
+                        padding: 12px 30px;
+                        font-size: 16px;
+                        background: $color-green;
+                        color: #fff;
+                        border: none;
+                        cursor: pointer;
+
+                        &.btn-edit {
+                            background-color: $color-blue;
+                        }
+
+                        &.btn-delete {
+                            background-color: $color-red;
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
         }
     }
 }
