@@ -41,9 +41,14 @@ $color-blue : #0064ff;
 
         &__thead {
             font-size: 20px;
+
             &__tr {
                 &__th {
                     padding: 20px 0;
+
+                    &.title {
+                        text-align: left;
+                    }
                 }
             }
         }
@@ -79,6 +84,18 @@ $color-blue : #0064ff;
                             background-color: $color-red;
                             margin-left: 10px;
                         }
+                    }
+
+                    &__input-text {
+                        width: 100%;
+                        padding: 10px 5px;
+                        box-sizing: border-box;
+                        font-size: 16px;
+                    }
+
+                    &__select {
+                        padding: 10px 5px;
+                        font-size: 16px;
                     }
                 }
             }
