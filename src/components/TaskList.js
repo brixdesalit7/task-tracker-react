@@ -1,15 +1,37 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
-const TaskList = ({ task }) => {
+const TaskList = ({ task, setTasks }) => {
     const [update, setUpdate] = useState({});
-    
+    const updateInput = useRef();
+
     function showUpdate(id) {
         setUpdate(prevVal => ({
             ...prevVal,
-            [id] : !prevVal[id]
+            [id]: !prevVal[id]
         }));
     }
+
+    function deleteTask(taskID) {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskID))
+    }
+
+    function updateTask(taskID) {
+        const updatedTitle = updateInput.current.value;
+        const updatedStatus = document.querySelector(`select[data-id="${taskID}"]`).value;
+
+        setTasks(prevTasks => prevTasks.map(task =>
+            task.id === taskID
+                ? { ...task, title: updatedTitle, status: updatedStatus }
+                : task
+        ));
+
+        setUpdate(prevVal => ({
+            ...prevVal,
+            [taskID]: false
+        }));
+    }
+
     return (
         <table className="task-tracker__table">
             <thead className="task-tracker__table__thead">
@@ -30,7 +52,7 @@ const TaskList = ({ task }) => {
                                 <th className="task-tracker__table__tbody__tr__th">{val.status}</th>
                                 <th className="task-tracker__table__tbody__tr__th">
                                     <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => showUpdate(val.id)}>Edit</button>
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete">Delete</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => deleteTask(val.id)}>Delete</button>
                                 </th>
                             </tr>
                         )
@@ -39,16 +61,16 @@ const TaskList = ({ task }) => {
                             <tr className="task-tracker__table__tbody__tr" key={val.id}>
                                 <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
                                 <th className="task-tracker__table__tbody__tr__th task-name">
-                                    <input type="text" className="task-tracker__table__tbody__tr__th__input-text" defaultValue={val.title} />
+                                    <input type="text" className="task-tracker__table__tbody__tr__th__input-text" ref={updateInput} defaultValue={val.title} />
                                 </th>
                                 <th className="task-tracker__table__tbody__tr__th">
-                                    <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status}>
-                                        <option value="finished">Finished</option>
-                                        <option value="inprogress">In Progress</option>
+                                    <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status} data-id={val.id}>
+                                        <option value="Finished">Finished</option>
+                                        <option value="In Progress">In Progress</option>
                                     </select>
                                 </th>
                                 <th className="task-tracker__table__tbody__tr__th">
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-save">Save</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-save" onClick={() => updateTask(val.id)}>Save</button>
                                     <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => showUpdate(val.id)}>Close</button>
                                 </th>
                             </tr>

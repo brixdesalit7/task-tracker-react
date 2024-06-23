@@ -1,6 +1,6 @@
 # Task Tracker using ReactJS
 
-My own task tracker implementation
+Studying ReactJS
 
 ## Install package
 
