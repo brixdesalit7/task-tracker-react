@@ -1,30 +1,42 @@
-import React from 'react'
-import { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from "react";
 
-const TaskList = ({ task, setTasks }) => {
+
+const TaskList = ({ task, setTask }) => {
     const [update, setUpdate] = useState({});
+    const [updateMessage, setUpdateMessage] = useState();
     const updateInput = useRef();
 
-    function showUpdate(id) {
+    useEffect(() => {
+        if (updateMessage) {
+            const timeoutMessage = setTimeout(() => {
+                setUpdateMessage(null);
+            }, 3000);
+            return () => clearTimeout(timeoutMessage);
+        }
+    }, [updateMessage]);
+
+    function showUpdate(currentID) {
         setUpdate(prevVal => ({
             ...prevVal,
-            [id]: !prevVal[id]
+            [currentID]: !prevVal[currentID]
         }));
     }
 
     function deleteTask(taskID) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskID))
+        setTask(prevTasks => prevTasks.filter((task) => task.id !== taskID));
+        setUpdateMessage("Task deleted!")
     }
 
     function updateTask(taskID) {
         const updatedTitle = updateInput.current.value;
         const updatedStatus = document.querySelector(`select[data-id="${taskID}"]`).value;
 
-        setTasks(prevTasks => prevTasks.map(task =>
-            task.id === taskID
-                ? { ...task, title: updatedTitle, status: updatedStatus }
-                : task
+        setTask(prevTasks => prevTasks.map(task => task.id === taskID ? 
+            { ...task, title: updatedTitle, status: updatedStatus } 
+            : task
         ));
+
+        setUpdateMessage("Task updated!");
 
         setUpdate(prevVal => ({
             ...prevVal,
@@ -33,6 +45,8 @@ const TaskList = ({ task, setTasks }) => {
     }
 
     return (
+        <>
+        {updateMessage && <p className="task-tracker__table__update message">{updateMessage}</p>}
         <table className="task-tracker__table">
             <thead className="task-tracker__table__thead">
                 <tr className="task-tracker__table__thead__tr">
@@ -77,9 +91,9 @@ const TaskList = ({ task, setTasks }) => {
                         )
                     }
                 })}
-
             </tbody>
         </table>
+        </>
     )
 }
 

@@ -30,7 +30,7 @@ const App = () => {
       <div className="task-tracker">
         <h1 className="task-tracker__heading">Task Tracker</h1>
         <AddTask task={task} setTask={setTask}/>
-        <TaskList task={task} setTasks={setTask}/>
+        <TaskList task={task} setTask={setTask}/>
       </div>
     </>
   )

@@ -2,6 +2,13 @@ $color-red : #fa0505;
 $color-green : #089950;
 $color-blue : #0064ff;
 
+.message {
+    font-size: 20px;
+    margin: 20px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
 .task-tracker {
     width: 1000px;
     margin: auto;
@@ -33,11 +40,19 @@ $color-blue : #0064ff;
             border: none;
             cursor: pointer;
         }
+
+        &__error {
+            color: $color-red;
+        }
     }
 
     &__table {
         width: 100%;
         margin-top: 40px;
+
+        &__update {
+            color: $color-green;
+        }
 
         &__thead {
             font-size: 20px;
