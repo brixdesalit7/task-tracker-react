@@ -14,7 +14,7 @@ const AddTask = ({ task, setTask }) => {
     }
   }, [errorMessage])
 
-  function addTask() {
+  function onAddTask() {
     const newTitle = inputRef.current.value.trim();
     
     if (!newTitle) {
@@ -41,7 +41,7 @@ const AddTask = ({ task, setTask }) => {
           placeholder="Add a new task..."
           ref={inputRef}
         />
-        <button className="task-tracker__form__add" onClick={addTask}>Add</button>
+        <button className="task-tracker__form__add" onClick={onAddTask}>Add</button>
         {errorMessage && <p className="task-tracker__form__error message">{errorMessage}</p>}
       </label>
     </div>
