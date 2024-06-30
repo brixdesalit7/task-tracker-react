@@ -15,19 +15,19 @@ const TaskList = ({ task, setTask }) => {
         }
     }, [updateMessage]);
 
-    function onShowUpdate(currentID) {
+    function handleShowUpdate(currentID) {
         setUpdate(prevVal => ({
             ...prevVal,
             [currentID]: !prevVal[currentID]
         }));
     }
 
-    function onDeleteTask(taskID) {
+    function handleDeleteTask(taskID) {
         setTask(prevTasks => prevTasks.filter((task) => task.id !== taskID));
         setUpdateMessage("Task deleted!")
     }
 
-    function onUpdateTask(taskID) {
+    function handleUpdateTask(taskID) {
         const updatedTitle = updateInput.current.value;
         const updatedStatus = document.querySelector(`select[data-id="${taskID}"]`).value;
 
@@ -65,8 +65,8 @@ const TaskList = ({ task, setTask }) => {
                                 <th className="task-tracker__table__tbody__tr__th task-name">{val.title}</th>
                                 <th className="task-tracker__table__tbody__tr__th">{val.status}</th>
                                 <th className="task-tracker__table__tbody__tr__th">
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => onShowUpdate(val.id)}>Edit</button>
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => onDeleteTask(val.id)}>Delete</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => handleShowUpdate(val.id)}>Edit</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleDeleteTask(val.id)}>Delete</button>
                                 </th>
                             </tr>
                         )
@@ -84,8 +84,8 @@ const TaskList = ({ task, setTask }) => {
                                     </select>
                                 </th>
                                 <th className="task-tracker__table__tbody__tr__th">
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-save" onClick={() => onUpdateTask(val.id)}>Save</button>
-                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => onShowUpdate(val.id)}>Close</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-save" onClick={() => handleUpdateTask(val.id)}>Save</button>
+                                    <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleShowUpdate(val.id)}>Close</button>
                                 </th>
                             </tr>
                         )
