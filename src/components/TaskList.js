@@ -62,8 +62,8 @@ const TaskList = ({ task, setTask }) => {
                         return (
                             <tr className="task-tracker__table__tbody__tr" key={val.id}>
                                 <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
-                                <th className="task-tracker__table__tbody__tr__th task-name">{val.title}</th>
-                                <th className="task-tracker__table__tbody__tr__th">{val.status}</th>
+                                <th className="task-tracker__table__tbody__tr__th task-name">{val.taskname}</th>
+                                <th className="task-tracker__table__tbody__tr__th">{val.status === 1 ? "Task Finished" : "Task Pending"}</th>
                                 <th className="task-tracker__table__tbody__tr__th">
                                     <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => handleShowUpdate(val.id)}>Edit</button>
                                     <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleDeleteTask(val.id)}>Delete</button>
@@ -75,10 +75,10 @@ const TaskList = ({ task, setTask }) => {
                             <tr className="task-tracker__table__tbody__tr" key={val.id}>
                                 <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
                                 <th className="task-tracker__table__tbody__tr__th task-name">
-                                    <input type="text" className="task-tracker__table__tbody__tr__th__input-text" ref={updateInput} defaultValue={val.title} />
+                                    <input type="text" className="task-tracker__table__tbody__tr__th__input-text" ref={updateInput} defaultValue={val.taskname} />
                                 </th>
                                 <th className="task-tracker__table__tbody__tr__th">
-                                    <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status} data-id={val.id}>
+                                    <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status} data-id={val.status}>
                                         <option value="Finished">Finished</option>
                                         <option value="In Progress">In Progress</option>
                                     </select>
