@@ -41,7 +41,7 @@ const AddTask = ({ task, response, setResponse }) => {
       .then(data => setResponse(data.res))
       .catch((error) => setResponse(error));
   }
-
+ 
   return (
     <div className="task-tracker__form">
       <form method="POST" onSubmit={handleAddTask}>

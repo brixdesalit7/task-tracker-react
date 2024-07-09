@@ -13,6 +13,13 @@ $color-blue : #0064ff;
     width: 1000px;
     margin: auto;
 
+    &__errormessage {
+        text-align: center;
+        color: $color-red;
+        font-size: 35px;
+        margin: 50px 0;
+    }
+
     &__heading {
         text-align: center;
         font-size: 40px;
