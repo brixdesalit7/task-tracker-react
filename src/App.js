@@ -5,38 +5,45 @@ import TaskList from "./components/TaskList";
 
 const App = () => {
   const [response, setResponse] = useState("");
-  const [serverResponse, setServerResponse] = useState("");
+  const [serverError, setServerError] = useState(null);
   const [task, setTask] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch Data
   useEffect(() => {
     async function fetchData() {
+      setIsLoading(true);
+      setServerError(null);
       try {
         const response = await fetch("http://localhost:5000/api");
 
         if (!response.ok) {
-          setServerResponse(response.status)
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        return data;
+        setTask(data.res);
       } catch (err) {
-        setServerResponse(err)
+        setServerError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
 
-    fetchData()
-      .then(data => setTask(data.res))
-      .catch(err => setServerResponse(err));
+    fetchData();
   }, [response]);
-  
+
 
   return (
     <>
       <div className="task-tracker">
         <h1 className="task-tracker__heading">Task Tracker</h1>
         <AddTask task={task} response={response} setResponse={setResponse} />
-        <TaskList task={task} serverResponse={serverResponse} />
+        <TaskList 
+          task={task} 
+          serverError={serverError} 
+          isLoading={isLoading} 
+        />
       </div>
     </>
   );

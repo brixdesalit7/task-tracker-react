@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 
-const TaskList = ({ task, setTask, serverResponse }) => {
+const TaskList = ({ task, setTask, serverError, isLoading  }) => {
     const [update, setUpdate] = useState({});
     const [updateMessage, setUpdateMessage] = useState();
     const updateInput = useRef();
@@ -31,8 +31,8 @@ const TaskList = ({ task, setTask, serverResponse }) => {
         const updatedTitle = updateInput.current.value;
         const updatedStatus = document.querySelector(`select[data-id="${taskID}"]`).value;
 
-        setTask(prevTasks => prevTasks.map(task => task.id === taskID ? 
-            { ...task, title: updatedTitle, status: updatedStatus } 
+        setTask(prevTasks => prevTasks.map(task => task.id === taskID ?
+            { ...task, title: updatedTitle, status: updatedStatus }
             : task
         ));
 
@@ -43,61 +43,64 @@ const TaskList = ({ task, setTask, serverResponse }) => {
             [taskID]: false
         }));
     }
-    if (serverResponse) {
-        return <h1 className="task-tracker__errormessage">Server error ...</h1>
-    } else if(task.length === 0) {
+    
+    if (isLoading) {
+        return <h1 className="task-tracker__errormessage">Loading...</h1>
+    } else if (serverError) {
+        return <h1 className="task-tracker__errormessage">Server error: {serverError}</h1>
+    } else if (task.length === 0) {
         return <h1 className="task-tracker__errormessage">There are no tasks</h1>
     } else {
         return (
             <>
-            {updateMessage && <p className="task-tracker__table__update message">{updateMessage}</p>}
-    
-            <table className="task-tracker__table">
-                <thead className="task-tracker__table__thead">
-                    <tr className="task-tracker__table__thead__tr">
-                        <th className="task-tracker__table__thead__tr__th">ID</th>
-                        <th className="task-tracker__table__thead__tr__th title">Task Name</th>
-                        <th className="task-tracker__table__thead__tr__th">Task Status</th>
-                        <th className="task-tracker__table__thead__tr__th">Option</th>
-                    </tr>
-                </thead>
-                <tbody className="task-tracker__table__tbody">
-                    {task && task.map((val) => {
-                        if (!update[val.id]) {
-                            return (
-                                <tr className="task-tracker__table__tbody__tr" key={val.id}>
-                                    <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
-                                    <th className="task-tracker__table__tbody__tr__th task-name">{val.taskname}</th>
-                                    <th className="task-tracker__table__tbody__tr__th">{val.status === 1 ? "Task Finished" : "Task Pending"}</th>
-                                    <th className="task-tracker__table__tbody__tr__th">
-                                        <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => handleShowUpdate(val.id)}>Edit</button>
-                                        <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleDeleteTask(val.id)}>Delete</button>
-                                    </th>
-                                </tr>
-                            )
-                        } else {
-                            return (
-                                <tr className="task-tracker__table__tbody__tr" key={val.id}>
-                                    <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
-                                    <th className="task-tracker__table__tbody__tr__th task-name">
-                                        <input type="text" className="task-tracker__table__tbody__tr__th__input-text" ref={updateInput} defaultValue={val.taskname} />
-                                    </th>
-                                    <th className="task-tracker__table__tbody__tr__th">
-                                        <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status} data-id={val.status}>
-                                            <option value="Finished">Finished</option>
-                                            <option value="In Progress">In Progress</option>
-                                        </select>
-                                    </th>
-                                    <th className="task-tracker__table__tbody__tr__th">
-                                        <button className="task-tracker__table__tbody__tr__th__btn btn-save" onClick={() => handleUpdateTask(val.id)}>Save</button>
-                                        <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleShowUpdate(val.id)}>Close</button>
-                                    </th>
-                                </tr>
-                            )
-                        }
-                    })}
-                </tbody>
-            </table>
+                {updateMessage && <p className="task-tracker__table__update message">{updateMessage}</p>}
+
+                <table className="task-tracker__table">
+                    <thead className="task-tracker__table__thead">
+                        <tr className="task-tracker__table__thead__tr">
+                            <th className="task-tracker__table__thead__tr__th">ID</th>
+                            <th className="task-tracker__table__thead__tr__th title">Task Name</th>
+                            <th className="task-tracker__table__thead__tr__th">Task Status</th>
+                            <th className="task-tracker__table__thead__tr__th">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody className="task-tracker__table__tbody">
+                        {task && task.map((val) => {
+                            if (!update[val.id]) {
+                                return (
+                                    <tr className="task-tracker__table__tbody__tr" key={val.id}>
+                                        <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
+                                        <th className="task-tracker__table__tbody__tr__th task-name">{val.taskname}</th>
+                                        <th className="task-tracker__table__tbody__tr__th">{val.status === 1 ? "Task Finished" : "Task Pending"}</th>
+                                        <th className="task-tracker__table__tbody__tr__th">
+                                            <button className="task-tracker__table__tbody__tr__th__btn btn-edit" onClick={() => handleShowUpdate(val.id)}>Edit</button>
+                                            <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleDeleteTask(val.id)}>Delete</button>
+                                        </th>
+                                    </tr>
+                                )
+                            } else {
+                                return (
+                                    <tr className="task-tracker__table__tbody__tr" key={val.id}>
+                                        <th className="task-tracker__table__tbody__tr__th task-id">{val.id}</th>
+                                        <th className="task-tracker__table__tbody__tr__th task-name">
+                                            <input type="text" className="task-tracker__table__tbody__tr__th__input-text" ref={updateInput} defaultValue={val.taskname} />
+                                        </th>
+                                        <th className="task-tracker__table__tbody__tr__th">
+                                            <select className="task-tracker__table__tbody__tr__th__select" defaultValue={val.status} data-id={val.status}>
+                                                <option value="Finished">Finished</option>
+                                                <option value="In Progress">In Progress</option>
+                                            </select>
+                                        </th>
+                                        <th className="task-tracker__table__tbody__tr__th">
+                                            <button className="task-tracker__table__tbody__tr__th__btn btn-save" onClick={() => handleUpdateTask(val.id)}>Save</button>
+                                            <button className="task-tracker__table__tbody__tr__th__btn btn-delete" onClick={() => handleShowUpdate(val.id)}>Close</button>
+                                        </th>
+                                    </tr>
+                                )
+                            }
+                        })}
+                    </tbody>
+                </table>
             </>
         )
     }
