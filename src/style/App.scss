@@ -1,6 +1,6 @@
-$color-red : #fa0505;
-$color-green : #089950;
-$color-blue : #0064ff;
+$color-red: #fa0505;
+$color-green: #089950;
+$color-blue: #0064ff;
 
 .message {
     font-size: 20px;
@@ -9,9 +9,18 @@ $color-blue : #0064ff;
     text-align: center;
 }
 
+.btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .task-tracker {
     width: 1000px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 40px 0;
 
     &__errormessage {
         text-align: center;
@@ -23,6 +32,7 @@ $color-blue : #0064ff;
     &__heading {
         text-align: center;
         font-size: 40px;
+        margin-bottom: 25px;
     }
 
     &__form {
@@ -81,23 +91,12 @@ $color-blue : #0064ff;
                     font-weight: 400;
                     padding: 20px 0;
 
-                    &.task-id {
-                        width: 80px;
-                    }
-
                     &.task-name {
-                        width: 450px;
+                        width: 530px;
                         text-align: left;
                     }
 
                     &__btn {
-                        padding: 12px 30px;
-                        font-size: 16px;
-                        background: $color-green;
-                        color: #fff;
-                        border: none;
-                        cursor: pointer;
-
                         &.btn-edit {
                             background-color: $color-blue;
                         }
@@ -120,6 +119,66 @@ $color-blue : #0064ff;
                         font-size: 16px;
                     }
                 }
+            }
+        }
+    }
+
+    &__modal {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        visibility: hidden;
+        z-index: 1;
+
+        &.is-opened {
+            visibility: visible;
+        }
+
+        &__bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            inset: 0;
+        }
+
+        &__inner {
+            background: #fff;
+            width: 50%;
+            position: relative;
+            z-index: 9999;
+        }
+        
+        &__title {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        &__form {
+            text-align: center;
+
+            &__input {
+                width: 400px;
+                padding: 10px;
+     
+            }
+    
+            &__select {
+                padding: 11px;
+                margin-left: 15px;
+            }
+
+            &__submit {
+                display: block;
+                text-align: center;
+                margin: 30px auto;
+                background-color: $color-green;
             }
         }
     }

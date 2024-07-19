@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style/App.scss";
 import AddTask from "./components/AddTask";
 import TaskList from "./components/TaskList";
+import Response from "./components/Response";
 
 const App = () => {
   const [response, setResponse] = useState("");
@@ -31,18 +32,19 @@ const App = () => {
     }
 
     fetchData();
-  }, [response]);
-
-
+  }, [response, setResponse]);
+  
   return (
     <>
       <div className="task-tracker">
         <h1 className="task-tracker__heading">Task Tracker</h1>
-        <AddTask task={task} response={response} setResponse={setResponse} />
-        <TaskList 
-          task={task} 
-          serverError={serverError} 
-          isLoading={isLoading} 
+        <AddTask task={task} setResponse={setResponse} />
+        <Response response={response} setResponse={setResponse}/>
+        <TaskList
+          task={task}
+          serverError={serverError}
+          isLoading={isLoading}
+          setResponse={setResponse}
         />
       </div>
     </>

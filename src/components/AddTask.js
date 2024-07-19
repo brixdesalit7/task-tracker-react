@@ -1,18 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 
-const AddTask = ({ task, response, setResponse }) => {
+const AddTask = ({ task, setResponse }) => {
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (response) {
-      const timeoutMessage = setTimeout(() => {
-        setResponse(null);
-      }, 3000);
-
-      return () => clearTimeout(timeoutMessage);
-    }
-  }, [response]);
-
+  // Add task
   function handleAddTask(e) {
     e.preventDefault();
 
@@ -21,13 +12,19 @@ const AddTask = ({ task, response, setResponse }) => {
     };
 
     if (!formData.taskname) {
-      return setResponse("Please input task name");
+      return setResponse({
+        message : "Please input task name",
+        error : true
+      });
     }
 
     const checkTaskName = task.find(value => value.taskname === formData.taskname);
 
     if(checkTaskName) {
-      return setResponse("Task name already exists");
+      return setResponse({
+        message : "Task name already exists",
+        error : true
+      });
     }
 
     fetch("http://localhost:5000/api/add", {
@@ -39,7 +36,7 @@ const AddTask = ({ task, response, setResponse }) => {
     })
       .then(response => response.json())
       .then(data => setResponse(data.res))
-      .catch((error) => setResponse(error));
+      .catch(error => setResponse(error));
   }
  
   return (
@@ -56,9 +53,6 @@ const AddTask = ({ task, response, setResponse }) => {
           <button type="submit" className="task-tracker__form__add">
             Add
           </button>
-          {response && (
-            <p className="task-tracker__form__error message">{response}</p>
-          )}
         </label>
       </form>
     </div>
