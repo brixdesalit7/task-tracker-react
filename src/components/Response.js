@@ -1,6 +1,9 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useContext} from "react";
+import { AppContext } from "../App";
 
-const Response = ({ response, setResponse }) => {
+const Response = () => {
+    // get Context
+   const { response, setResponse } = useContext(AppContext);
     // Hide response after 3secods
     useEffect(() => {
       if (response) {

@@ -1,6 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
+import { AppContext } from "../App";
 
-const AddTask = ({ task, response ,setResponse }) => {
+const AddTask = () => {
+  // get Context
+  const {task, setResponse } = useContext(AppContext)
   const inputRef = useRef(null);
 
   // Add task

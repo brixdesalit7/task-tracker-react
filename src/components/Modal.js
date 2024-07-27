@@ -1,17 +1,56 @@
-import React from "react";
-import ModalButton from "./ModalButton";
+import React, { useContext } from "react";
+import { AppContext } from "../App";
 import alerticon from "../assets/img/alert-icon.svg";
 
-const Modal = ({
-    modal,
-    modalType,
-    handleModal,
-    handleUpdate,
-    selectedTask,
-    handleInputChange,
-    setResponse,
-    handleDeleteTask,
-}) => {
+const Modal = ({ modal, setShowModal, modalType, handleModal, selectedTask, setSelectedTask }) => {
+    // get Context
+    const { setResponse } = useContext(AppContext)
+
+    // Handle Update
+    function handleInputChange(e) {
+        setSelectedTask({
+            ...selectedTask,
+            [e.target.name]: e.target.value,
+        });
+    }
+
+    function handleUpdate(e) {
+        e.preventDefault();
+
+        const postID = selectedTask.id;
+
+        const formData = {
+            taskname: selectedTask.taskname,
+            status: selectedTask.status,
+        };
+
+        fetch(`http://localhost:5000/api/update/${postID}`, {
+            method: "PUT",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => setResponse(data.res))
+            .catch((err) => setResponse(err));
+
+        setShowModal(false);
+    }
+
+    // Delete Task
+    function handleDeleteTask(taskID) {
+        fetch(`http://localhost:5000/api/delete/${taskID}`, {
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((data) => setResponse(data.res))
+            .catch((error) => setResponse(error));
+
+        setShowModal(false);
+
+    }
+
     let modalContent;
     if (modalType === "Edit") {
         modalContent = (
@@ -35,12 +74,14 @@ const Modal = ({
                             <option value="0">Task Pending</option>
                         </select>
                     </div>
-                    <ModalButton
-                        handleModal={handleModal}
-                        type={modalType}
-                        setResponse={setResponse}
-                        selectedTask={selectedTask}
-                    />
+                    <div className="task-tracker__modal__inner__content__button">
+                        <button className="task-tracker__modal__inner__content__button__btn btn btn-submit">
+                            Edit
+                        </button>
+                        <button type="button" className="task-tracker__modal__inner__content__button__btn btn btn-close" onClick={handleModal}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
             </>
         );
@@ -56,12 +97,14 @@ const Modal = ({
                     <p className="task-tracker__modal__inner__content__text">
                         Are you sure you want to delete this task?
                     </p>
-                    <ModalButton
-                        handleModal={handleModal}
-                        handleDeleteTask={handleDeleteTask}
-                        setResponse={setResponse}
-                        selectedTask={selectedTask}
-                    />
+                    <div className="task-tracker__modal__inner__content__button">
+                        <button className="task-tracker__modal__inner__content__button__btn btn btn-submit" onClick={() => handleDeleteTask(selectedTask.id)}>
+                            Delete
+                        </button>
+                        <button type="button" className="task-tracker__modal__inner__content__button__btn btn btn-close" onClick={handleModal}>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </>
         );
@@ -69,11 +112,7 @@ const Modal = ({
 
     return (
         <>
-            <div
-                className={
-                    modal ? "task-tracker__modal is-opened" : "task-tracker__modal"
-                }
-            >
+            <div className={ modal ? "task-tracker__modal is-opened" : "task-tracker__modal"} >
                 <div className="task-tracker__modal__bg" onClick={handleModal}></div>
                 <div className="task-tracker__modal__inner">
                     <p className="task-tracker__modal__inner__title">{modalType} Task</p>

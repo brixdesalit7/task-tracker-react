@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "./Modal";
+import { AppContext } from "../App";
 
-const TaskList = ({ task, serverError, isLoading, setResponse }) => {
+const TaskList = ({ serverError, isLoading }) => {
     // For updating/deleting task
     const [selectedTask, setSelectedTask] = useState({});
-    // For showing update modal
-    const [modal, setShowModal] = useState(false);
+    // get Context
+    const { task } = useContext(AppContext);
     // For modal type
     const [modalType, setModalType] = useState("");
+    // For showing update modal
+    const [modal, setShowModal] = useState(false);
 
-    /**
-    Handle Modal
+
+    /** Handle Modal
     * @param {number} postID - ID of task
     * @param {string} type - type of modal to show
     */
@@ -29,51 +32,6 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
         } else {
             setShowModal(false);
         }
-    }
-
-    // Handle Update
-    function handleInputChange(e) {
-        setSelectedTask({
-            ...selectedTask,
-            [e.target.name]: e.target.value,
-        });
-    }
-
-    function handleUpdate(e) {
-        e.preventDefault();
-
-        const postID = selectedTask.id;
-
-        const formData = {
-            taskname: selectedTask.taskname,
-            status: selectedTask.status,
-        };
-
-        fetch(`http://localhost:5000/api/update/${postID}`, {
-            method: "PUT",
-            body: JSON.stringify(formData),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => setResponse(data.res))
-            .catch((err) => setResponse(err));
-
-        setShowModal(false);
-    }
-
-    // Delete Task
-    function handleDeleteTask(taskID) {
-        fetch(`http://localhost:5000/api/delete/${taskID}`, {
-            method: "DELETE",
-        })
-            .then((response) => response.json())
-            .then((data) => setResponse(data.res))
-            .catch((error) => setResponse(error));
-
-        setShowModal(false);
-
     }
 
     if (isLoading) {
@@ -131,15 +89,13 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
                             })}
                     </tbody>
                 </table>
-                <Modal
-                    modal={modal}
-                    modalType={modalType}
-                    handleModal={handleModal}
-                    handleUpdate={handleUpdate}
-                    selectedTask={selectedTask}
-                    handleInputChange={handleInputChange}
-                    handleDeleteTask={handleDeleteTask}
-                />
+                <Modal 
+                modal={modal} 
+                modalType={modalType} 
+                setShowModal={setShowModal}
+                handleModal={handleModal} 
+                selectedTask={selectedTask} 
+                setSelectedTask={setSelectedTask} />
             </>
         );
     }
