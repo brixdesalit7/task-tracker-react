@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-const AddTask = ({ task, setResponse }) => {
+const AddTask = ({ task, response ,setResponse }) => {
   const inputRef = useRef(null);
 
   // Add task
@@ -12,19 +12,13 @@ const AddTask = ({ task, setResponse }) => {
     };
 
     if (!formData.taskname) {
-      return setResponse({
-        message : "Please input task name",
-        error : true
-      });
+      return setResponse("Please input task name");
     }
 
     const checkTaskName = task.find(value => value.taskname === formData.taskname);
 
     if(checkTaskName) {
-      return setResponse({
-        message : "Task name already exists",
-        error : true
-      });
+      return setResponse("Task name already exists");
     }
 
     fetch("http://localhost:5000/api/add", {
@@ -38,7 +32,7 @@ const AddTask = ({ task, setResponse }) => {
       .then(data => setResponse(data.res))
       .catch(error => setResponse(error));
   }
- 
+
   return (
     <div className="task-tracker__form">
       <form method="POST" onSubmit={handleAddTask}>

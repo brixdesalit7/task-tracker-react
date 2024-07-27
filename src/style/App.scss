@@ -42,6 +42,7 @@ $color-blue: #0064ff;
             width: 300px;
             padding: 10px;
             font-size: 16px;
+            text-transform: capitalize;
 
             &::placeholder {
                 font-size: 16px;
@@ -94,6 +95,7 @@ $color-blue: #0064ff;
                     &.task-name {
                         width: 530px;
                         text-align: left;
+                        text-transform: capitalize;
                     }
 
                     &__btn {
@@ -152,33 +154,52 @@ $color-blue: #0064ff;
             width: 50%;
             position: relative;
             z-index: 9999;
-        }
-        
-        &__title {
-            text-align: center;
-            font-size: 30px;
-            font-weight: 600;
-        }
 
-        &__form {
-            text-align: center;
-
-            &__input {
-                width: 400px;
-                padding: 10px;
-     
-            }
-    
-            &__select {
-                padding: 11px;
-                margin-left: 15px;
-            }
-
-            &__submit {
-                display: block;
+            &__title {
                 text-align: center;
-                margin: 30px auto;
-                background-color: $color-green;
+                font-size: 30px;
+                font-weight: 600;
+            }
+
+            &__content {
+                text-align: center;
+
+                &__input {
+                    width: 400px;
+                    padding: 10px;
+                }
+
+                &__select {
+                    padding: 11px;
+                    margin-left: 15px;
+                }
+
+                &__img {
+                    width: 120px;
+                }
+
+                &__text {
+                    font-size: 20px;
+                    margin: 5px 0;
+                }
+
+                &__button {
+                    text-align: center;
+                    margin: 30px auto;
+                    display: flex;
+                    justify-content: center;
+                    gap: 15px;
+
+                    &__btn {
+                        &.btn-close {
+                            background-color: $color-red;
+                        }
+
+                        &.btn-submit {
+                            background-color: $color-green;
+                        }
+                    }
+                }
             }
         }
     }

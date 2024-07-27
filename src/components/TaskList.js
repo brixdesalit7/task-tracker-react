@@ -1,13 +1,22 @@
 import React, { useState } from "react";
+import Modal from "./Modal";
 
 const TaskList = ({ task, serverError, isLoading, setResponse }) => {
-    // For updating task
+    // For updating/deleting task
     const [selectedTask, setSelectedTask] = useState({});
     // For showing update modal
     const [modal, setShowModal] = useState(false);
+    // For modal type
+    const [modalType, setModalType] = useState("");
 
-    // Show Modal Update Task
-    function handleModal(postID) {
+    /**
+    Handle Modal
+    * @param {number} postID - ID of task
+    * @param {string} type - type of modal to show
+    */
+    function handleModal(postID = "", type = "") {
+        setModalType(type === "Edit" ? "Edit" : "Delete");
+
         if (!modal) {
             const filterTask = task.filter((task) => task.id === postID);
             setSelectedTask({
@@ -16,6 +25,7 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
                 status: filterTask[0].status,
             });
             setShowModal(true);
+
         } else {
             setShowModal(false);
         }
@@ -28,7 +38,7 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
             [e.target.name]: e.target.value,
         });
     }
-    
+
     function handleUpdate(e) {
         e.preventDefault();
 
@@ -61,6 +71,9 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
             .then((response) => response.json())
             .then((data) => setResponse(data.res))
             .catch((error) => setResponse(error));
+
+        setShowModal(false);
+
     }
 
     if (isLoading) {
@@ -97,18 +110,18 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
                                             {val.taskname}
                                         </th>
                                         <th className="task-tracker__table__tbody__tr__th">
-                                            {val.status === 1 ? "Task Finished" : "Task Pending"}
+                                            {val.status === 1 ? "Task Finished  ✅" : "Task Pending ⌛"}
                                         </th>
                                         <th className="task-tracker__table__tbody__tr__th">
                                             <button
                                                 className="task-tracker__table__tbody__tr__th__btn btn btn-edit"
-                                                onClick={() => handleModal(val.id)}
+                                                onClick={() => handleModal(val.id, "Edit")}
                                             >
                                                 Edit
                                             </button>
                                             <button
                                                 className="task-tracker__table__tbody__tr__th__btn btn btn-delete"
-                                                onClick={() => handleDeleteTask(val.id)}
+                                                onClick={() => handleModal(val.id, "Delete")}
                                             >
                                                 Delete
                                             </button>
@@ -118,38 +131,15 @@ const TaskList = ({ task, serverError, isLoading, setResponse }) => {
                             })}
                     </tbody>
                 </table>
-                <div
-                    className={
-                        modal ? "task-tracker__modal is-opened" : "task-tracker__modal"
-                    }
-                >
-                    <div className="task-tracker__modal__bg" onClick={handleModal}></div>
-                    <div className="task-tracker__modal__inner">
-                        <p className="task-tracker__modal__title">Update Task</p>
-                        <form className="task-tracker__modal__form" onSubmit={handleUpdate}>
-                            <input
-                                type="text"
-                                className="task-tracker__modal__form__input"
-                                name="taskname"
-                                defaultValue={selectedTask.taskname}
-                                onChange={handleInputChange}
-                            />
-                            <select
-                                className="task-tracker__modal__form__select"
-                                name="status"
-                                defaultValue={selectedTask.status}
-                                value={selectedTask.status}
-                                onChange={handleInputChange}
-                            >
-                                <option value="1">Task Finished</option>
-                                <option value="0">Task Pending</option>
-                            </select>
-                            <button className="task-tracker__modal__form__submit btn">
-                                Update
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <Modal
+                    modal={modal}
+                    modalType={modalType}
+                    handleModal={handleModal}
+                    handleUpdate={handleUpdate}
+                    selectedTask={selectedTask}
+                    handleInputChange={handleInputChange}
+                    handleDeleteTask={handleDeleteTask}
+                />
             </>
         );
     }
