@@ -76,7 +76,7 @@ const Modal = ({ modal, setShowModal, modalType, handleModal, selectedTask, setS
                     </div>
                     <div className="task-tracker__modal__inner__content__button">
                         <button className="task-tracker__modal__inner__content__button__btn btn btn-submit">
-                            Edit
+                            Save
                         </button>
                         <button type="button" className="task-tracker__modal__inner__content__button__btn btn btn-close" onClick={handleModal}>
                             Cancel

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import Modal from "./Modal";
+import Spinner from "./Spinner";
 import { AppContext } from "../App";
 
 const TaskList = ({ serverError, isLoading }) => {
@@ -35,7 +36,7 @@ const TaskList = ({ serverError, isLoading }) => {
     }
 
     if (isLoading) {
-        return <h1 className="task-tracker__errormessage">Loading...</h1>;
+        return <Spinner/>;
     } else if (serverError) {
         return (
             <h1 className="task-tracker__errormessage">
